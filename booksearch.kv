@@ -1,10 +1,10 @@
 #: import main main
 
 # 起動時に表示されるwidget
-BookSearchRoot
+BookSearchRoot  
 
 <BookSearchRoot>
-    # 一覧画面
+    # 一覧画面  #今回はbooklistsとbookinfoの2画面に遷移する
     carousel: carousel
     booklists: booklists
     bookinfo:  bookinfo
@@ -35,3 +35,85 @@ BookSearchRoot
                 id: booklists
             BookInfo:           # 詳細画面
                 id: bookinfo
+
+<SearchBookForm>
+    # 一覧画面のレイアウト
+    orientation: "vertical"
+    search_input: search_box    # ①クラス変数を追加　こうすることでPython側でself.search_inputが取れる
+    search_results: search_results_list #検索結果のリスト，main.pyではsearch_resultsとして使われる
+
+    # 検索フォーム
+    BoxLayout:
+        height: "40dp"
+        size_hint_y: None
+        TextInput:
+            id: search_box  # ②　「①」で値を渡せる
+            size_hint_x: 70
+        Button:
+            text: "検索"
+            size_hint_x: 30
+            on_press: root.search_book()
+
+    BoxLayout:
+        size_hint:1,.1
+
+        Label:
+            size_hint: .2,1
+            text: "出版年月"
+
+        Spinner:    # 年のリスト表示
+            id: year
+            size_hint: .1,1
+            halign: 'center'
+            valign: 'middle'
+            text_size: self.size
+            text:'2000'
+            values: [str(y) for y in range(2000, 2019) ]    #2018年までの書籍をリストで表示
+
+        Label:
+            size_hint: .05,1
+            text: "年"
+
+        Spinner:
+            id: month   # 月のリスト表示
+            size_hint: .05,1
+            halign: 'center'
+            valign: 'middle'
+            text_size: self.size
+            text:'01'
+            values: ['{0:02d}'.format(x)  for x in range(1,13)]
+
+        Label:
+            size_hint: .05,1
+            text: "月"
+
+        Spinner:    # 日のリスト表示
+            id: day
+            size_hint: .05,1
+            halign: 'center'
+            valign: 'middle'
+            text_size: self.size
+            text:'01'
+            values: ['{0:02d}'.format(x)  for x in range(1,30)] # 月ごとに日が変わる処理が必要だが一旦保留
+
+        Label:
+            size_hint: .05,1
+            text: "日"
+
+
+        Label:
+            size_hint: .05,1
+            text: "件数"
+
+        Spinner:    # 月ごとのサイズ
+            id: number
+            size_hint: .05,1
+            halign: 'center'
+            valign: 'middle'
+            text_size: self.size
+            text:'10'
+            values: ['1','5','10', '15', '20'] 
+
+
+    RecycleView:
+        id: search_results_list
