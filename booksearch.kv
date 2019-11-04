@@ -1,0 +1,37 @@
+#: import main main
+
+# 起動時に表示されるwidget
+BookSearchRoot
+
+<BookSearchRoot>
+    # 一覧画面
+    carousel: carousel
+    booklists: booklists
+    bookinfo:  bookinfo
+
+    BoxLayout:
+        orientation: "vertical"
+        ActionBar:
+            ActionView:
+                ActionPrevious:
+                    title: "国会図書館検索"
+                    with_previous: False
+                    app_icon: "./icon/32player.png"
+
+                ActionButton:
+                    text: "一覧"
+
+                    # 一覧画面に移動する
+                    on_press: app.root.carousel.load_slide(app.root.booklists)
+                ActionButton:
+                    text: "詳細"
+
+                    # 詳細画面に移動する
+                    on_press: app.root.carousel.load_slide(app.root.bookinfo)
+
+        Carousel:
+            id: carousel
+            SearchBookForm:  # 一覧画面
+                id: booklists
+            BookInfo:           # 詳細画面
+                id: bookinfo
